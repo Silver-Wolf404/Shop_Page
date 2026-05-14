@@ -1,0 +1,521 @@
+{% extends 'base.html' %}
+
+{% block title %}购物车 - 母婴商城{% endblock %}
+
+{% block extra_css %}
+        body {
+            background-color: #f5f5f5;
+        }
+        .banner {
+            margin: 20px auto;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+        .banner img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .cart-container {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+        }
+        .cart-header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-radius: 4px 4px 0 0;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        .cart-header-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .cart-header-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .cart-col-select { width: 80px; }
+        .cart-col-product { flex: 1; }
+        .cart-col-price { width: 120px; text-align: center; }
+        .cart-col-quantity { width: 150px; text-align: center; }
+        .cart-col-subtotal { width: 120px; text-align: center; }
+        .cart-col-action { width: 100px; text-align: center; }
+        .cart-item {
+            background: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e8e8e8;
+            transition: background 0.3s;
+        }
+        .cart-item:hover {
+            background: #fafafa;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+            border-radius: 0 0 4px 4px;
+        }
+        .cart-checkbox {
+            width: 80px;
+            display: flex;
+            justify-content: center;
+        }
+        .cart-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .cart-product {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+        .cart-product-image {
+            width: 80px;
+            height: 80px;
+            background: #f8f8f8;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .cart-product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .cart-product-info h4 {
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        .cart-product-info p {
+            font-size: 0.8rem;
+            color: #999;
+        }
+        .cart-price {
+            width: 120px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #ff5722;
+            font-weight: bold;
+        }
+        .cart-quantity {
+            width: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .quantity-control {
+            display: flex;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #666;
+            transition: background 0.3s;
+        }
+        .quantity-btn:hover {
+            background: #f0f0f0;
+        }
+        .quantity-input {
+            width: 50px;
+            height: 32px;
+            border: none;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            text-align: center;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .cart-subtotal {
+            width: 120px;
+            text-align: center;
+            font-size: 0.95rem;
+            color: #ff5722;
+            font-weight: bold;
+        }
+        .cart-action {
+            width: 100px;
+            text-align: center;
+        }
+        .delete-btn {
+            color: #999;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+        .delete-btn:hover {
+            color: #ff5722;
+        }
+        .cart-footer {
+            background: white;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-footer-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .select-all {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .select-all input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .delete-all {
+            color: #999;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .delete-all:hover {
+            color: #ff5722;
+        }
+        .cart-footer-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .total-info {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .total-info span {
+            color: #ff5722;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        .checkout-btn {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .checkout-btn:hover {
+            background: #e64a19;
+        }
+        .empty-cart {
+            background: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 4px;
+        }
+        .empty-cart-icon {
+            font-size: 60px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        .empty-cart-text {
+            color: #999;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+        .empty-cart-btn {
+            background: #d1c4e9;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .empty-cart-btn:hover {
+            background: #b39ddb;
+        }
+        @media (max-width: 768px) {
+            .cart-header {
+                display: none;
+            }
+            .cart-item {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            .cart-checkbox, .cart-price, .cart-quantity, .cart-subtotal, .cart-action {
+                width: 100%;
+                text-align: left;
+            }
+            .cart-footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+{% endblock %}
+
+{% block content %}
+    <div class="banner">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=summer%20clearance%20sale%20baby%20blanket%20clothes%20pink%20floral%20pattern%20banner&image_size=landscape_16_9" alt="夏季清仓">
+    </div>
+
+    <div class="cart-container">
+        {% if cart_items %}
+        <div class="cart-header">
+            <div class="cart-header-item cart-col-select">
+                <input type="checkbox" id="selectAll"> 全选
+            </div>
+            <div class="cart-header-item cart-col-product">商品</div>
+            <div class="cart-header-item cart-col-price">单价</div>
+            <div class="cart-header-item cart-col-quantity">数量</div>
+            <div class="cart-header-item cart-col-subtotal">小计</div>
+            <div class="cart-header-item cart-col-action">操作</div>
+        </div>
+
+        {% for item in cart_items %}
+        <div class="cart-item" data-cart-id="{{ item.id }}">
+            <div class="cart-checkbox">
+                <input type="checkbox" class="itemCheckbox" checked>
+            </div>
+            <div class="cart-product" onclick="goToDetail({{ item.commodity.id }})">
+                <div class="cart-product-image">
+                    {% if item.commodity.img %}
+                    <img src="{{ item.commodity.img.url }}" alt="{{ item.commodity.name }}">
+                    {% else %}
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=baby%20product%20placeholder&image_size=square" alt="{{ item.commodity.name }}">
+                    {% endif %}
+                </div>
+                <div class="cart-product-info">
+                    <h4>{{ item.commodity.name }}</h4>
+                    <p>{{ item.commodity.types }}</p>
+                </div>
+            </div>
+            <div class="cart-price">¥{{ item.commodity.discount|default:item.commodity.price|floatformat:2 }}</div>
+            <div class="cart-quantity">
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="updateQuantity({{ item.id }}, -1)">-</button>
+                    <input type="text" class="quantity-input" value="{{ item.quantity }}" onchange="updateQuantityDirect({{ item.id }}, this)">
+                    <button class="quantity-btn" onclick="updateQuantity({{ item.id }}, 1)">+</button>
+                </div>
+            </div>
+            <div class="cart-subtotal" id="subtotal-{{ item.id }}">¥{{ item.subtotal|floatformat:2 }}</div>
+            <div class="cart-action">
+                <span class="delete-btn" onclick="deleteItem({{ item.id }})">删除</span>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="cart-footer">
+            <div class="cart-footer-left">
+                <label class="select-all">
+                    <input type="checkbox" id="selectAllFooter" checked> 已选 {{ total_count }} 件
+                </label>
+                <span class="delete-all" onclick="clearCart()">删除全部</span>
+            </div>
+            <div class="cart-footer-right">
+                <div class="total-info">
+                    应付: <span id="totalPrice">¥{{ total_price|floatformat:2 }}</span>
+                </div>
+                <button class="checkout-btn" onclick="checkout()">结算</button>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-cart">
+            <div class="empty-cart-icon">🛒</div>
+            <div class="empty-cart-text">购物车是空的，去挑选一些宝贝吧！</div>
+            <button class="empty-cart-btn" onclick="goShopping()">去购物</button>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function goToDetail(id) {
+            window.location.href = `/commodity/detail/${id}/`;
+        }
+
+        function goShopping() {
+            window.location.href = '/commodity/';
+        }
+
+        function updateQuantity(cartId, delta) {
+            const input = document.querySelector(`[data-cart-id="${cartId}"] .quantity-input`);
+            const current = parseInt(input.value);
+            const newQty = current + delta;
+            
+            if (newQty < 1) {
+                deleteItem(cartId);
+                return;
+            }
+            
+            fetch('/cart/update/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ cart_id: cartId, quantity: newQty })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.deleted) {
+                        document.querySelector(`[data-cart-id="${cartId}"]`).remove();
+                    } else {
+                        input.value = newQty;
+                        document.getElementById(`subtotal-${cartId}`).textContent = '¥' + data.subtotal.toFixed(2);
+                        document.getElementById('totalPrice').textContent = '¥' + data.total_price.toFixed(2);
+                    }
+                    updateSelectedCount();
+                }
+            });
+        }
+
+        function updateQuantityDirect(cartId, input) {
+            let newQty = parseInt(input.value);
+            if (isNaN(newQty) || newQty < 1) {
+                newQty = 1;
+            }
+            
+            fetch('/cart/update/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ cart_id: cartId, quantity: newQty })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.deleted) {
+                        document.querySelector(`[data-cart-id="${cartId}"]`).remove();
+                    } else {
+                        input.value = newQty;
+                        document.getElementById(`subtotal-${cartId}`).textContent = '¥' + data.subtotal.toFixed(2);
+                        document.getElementById('totalPrice').textContent = '¥' + data.total_price.toFixed(2);
+                    }
+                    updateSelectedCount();
+                }
+            });
+        }
+
+        function deleteItem(cartId) {
+            if (!confirm('确定要删除这件商品吗？')) return;
+            
+            fetch('/cart/delete/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ cart_id: cartId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.querySelector(`[data-cart-id="${cartId}"]`).remove();
+                    document.getElementById('totalPrice').textContent = '¥' + data.total_price.toFixed(2);
+                    updateSelectedCount();
+                    checkEmptyCart();
+                }
+            });
+        }
+
+        function clearCart() {
+            if (!confirm('确定要清空购物车吗？')) return;
+            
+            fetch('/cart/clear/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            });
+        }
+
+        function checkout() {
+            window.location.href = '/shopper/checkout/';
+        }
+
+        function updateSelectedCount() {
+            const checkboxes = document.querySelectorAll('.itemCheckbox:checked');
+            const footerCheckbox = document.getElementById('selectAllFooter');
+            const headerCheckbox = document.getElementById('selectAll');
+            
+            const totalChecked = checkboxes.length;
+            const totalItems = document.querySelectorAll('.itemCheckbox').length;
+            
+            document.querySelector('.select-all').innerHTML = 
+                `<input type="checkbox" id="selectAllFooter" ${totalChecked === totalItems ? 'checked' : ''}> 已选 ${totalChecked} 件`;
+            
+            headerCheckbox.checked = totalChecked === totalItems;
+        }
+
+        function checkEmptyCart() {
+            const items = document.querySelectorAll('.cart-item');
+            if (items.length === 0) {
+                location.reload();
+            }
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAll = document.getElementById('selectAll');
+            selectAll.addEventListener('change', function() {
+                document.querySelectorAll('.itemCheckbox').forEach(cb => {
+                    cb.checked = selectAll.checked;
+                });
+                updateSelectedCount();
+            });
+
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('itemCheckbox')) {
+                    updateSelectedCount();
+                }
+            });
+        });
+    </script>
+{% endblock %}

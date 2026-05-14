@@ -1,0 +1,716 @@
+{% extends 'base.html' %}
+
+{% block title %}个人中心 - 母婴商城{% endblock %}
+
+{% block extra_css %}
+.profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.profile-header {
+    background: linear-gradient(135deg, #f8bbd0 0%, #d1c4e9 100%);
+    padding: 40px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    color: white;
+}
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+.user-details h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+.user-details p {
+    opacity: 0.9;
+    margin-bottom: 5px;
+}
+.profile-nav {
+    display: flex;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+.profile-nav a {
+    flex: 1;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    color: #333;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+.profile-nav a:hover, .profile-nav a.active {
+    background: #f5f0ff;
+    color: #9c27b0;
+}
+.profile-nav .icon {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+.profile-content {
+    background: white;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.section-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f5f0ff;
+}
+.order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.order-item {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+}
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #666;
+}
+.order-status {
+    color: #ff5722;
+    font-weight: bold;
+}
+.order-items {
+    display: flex;
+    gap: 15px;
+    padding: 15px 0;
+    border-top: 1px dashed #eee;
+    border-bottom: 1px dashed #eee;
+}
+.order-item-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.order-item-info {
+    flex: 1;
+}
+.order-item-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.order-item-price {
+    color: #ff5722;
+    font-weight: bold;
+}
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+.order-total {
+    font-size: 1.1rem;
+    color: #ff5722;
+    font-weight: bold;
+}
+.order-actions {
+    display: flex;
+    gap: 10px;
+}
+.order-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+.order-btn-primary {
+    background: #d1c4e9;
+    color: white;
+}
+.order-btn-primary:hover {
+    background: #b39ddb;
+}
+.order-btn-secondary {
+    background: #f5f5f5;
+    color: #666;
+}
+.order-btn-secondary:hover {
+    background: #eee;
+}
+.address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.address-card {
+    border: 2px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    transition: all 0.3s;
+}
+.address-card:hover {
+    border-color: #d1c4e9;
+}
+.address-card.default {
+    border-color: #d1c4e9;
+    background: #faf5ff;
+}
+.address-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #d1c4e9;
+    color: white;
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+.address-header {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+.address-name {
+    font-weight: bold;
+}
+.address-phone {
+    color: #666;
+}
+.address-detail {
+    color: #666;
+}
+.address-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px;
+}
+.address-action {
+    color: #9c27b0;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+.address-action:hover {
+    text-decoration: underline;
+}
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+.empty-text {
+    font-size: 0.95rem;
+}
+.address-form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    display: none;
+}
+.address-form-overlay.show {
+    display: flex;
+}
+.address-form {
+    background: white;
+    border-radius: 8px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+}
+.form-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group-row {
+    display: flex;
+    gap: 15px;
+}
+.form-group-row .form-group {
+    flex: 1;
+}
+.form-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+.form-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    outline: none;
+}
+.form-input:focus {
+    border-color: #d1c4e9;
+}
+.form-radio-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.form-radio {
+    width: 16px;
+    height: 16px;
+    accent-color: #ff5722;
+}
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 25px;
+}
+.form-btn {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+.form-btn-cancel {
+    background: #f5f5f5;
+    color: #333;
+}
+.form-btn-submit {
+    background: #ff5722;
+    color: white;
+}
+.form-close {
+    float: right;
+    font-size: 1.5rem;
+    color: #999;
+    cursor: pointer;
+}
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+}
+.toast {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.toast.show {
+    transform: translateX(0);
+}
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="user-info">
+                <div class="avatar">👤</div>
+                <div class="user-details">
+                    <h2>欢迎回来，{{ user.username|default:'用户' }}</h2>
+                    <p>注册时间：{{ user.create_time|date:'Y-m-d'|default:'2024-01-15' }}</p>
+                    <p>会员等级：普通会员</p>
+                </div>
+            </div>
+    </div>
+
+    <div class="profile-nav">
+        <a href="#orders" {% if active_tab == 'orders' %}class="active"{% endif %}>
+            <span class="icon">📦</span>
+            <span>我的订单</span>
+        </a>
+        <a href="#addresses" {% if active_tab == 'addresses' %}class="active"{% endif %}>
+            <span class="icon">📍</span>
+            <span>收货地址</span>
+        </a>
+        <a href="#collections" {% if active_tab == 'collections' %}class="active"{% endif %}>
+            <span class="icon">❤️</span>
+            <span>我的收藏</span>
+        </a>
+        <a href="#settings" {% if active_tab == 'settings' %}class="active"{% endif %}>
+            <span class="icon">⚙️</span>
+            <span>账户设置</span>
+        </a>
+    </div>
+
+    <div class="profile-content">
+        {% if active_tab == 'orders' %}
+        <div id="orders">
+            <div class="section-title">我的订单</div>
+            {% if orders %}
+            <div class="order-list">
+                {% for order in orders %}
+                <div class="order-item">
+                    <div class="order-header">
+                        <span>订单编号：{{ order.order_sn }}</span>
+                        <span class="order-status">{{ order.status_text }}</span>
+                    </div>
+                    <div class="order-items">
+                        {% for item in order.items %}
+                        <img src="{{ item.image }}" alt="{{ item.name }}" class="order-item-img">
+                        <div class="order-item-info">
+                            <div class="order-item-name">{{ item.name }}</div>
+                            <div class="order-item-price">¥{{ item.price }}</div>
+                            <div style="color:#999;font-size:0.85rem">x{{ item.quantity }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="order-footer">
+                        <span class="order-total">共{{ order.total_count }}件商品，实付：¥{{ order.total_price }}</span>
+                        <div class="order-actions">
+                            <button class="order-btn order-btn-secondary">查看详情</button>
+                            {% if order.status == '待支付' %}
+                            <button class="order-btn order-btn-primary">去支付</button>
+                            {% elif order.status == '已支付' %}
+                            <button class="order-btn order-btn-primary">确认收货</button>
+                            {% else %}
+                            <button class="order-btn order-btn-secondary">评价</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">📦</div>
+                <div class="empty-text">暂无订单，快去购物吧！</div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% elif active_tab == 'addresses' %}
+        <div id="addresses">
+            <div class="section-title">收货地址</div>
+            <div class="address-list" id="addressList">
+                {% if addresses %}
+                    {% for addr in addresses %}
+                    <div class="address-card {% if addr.is_default %}default{% endif %}">
+                        {% if addr.is_default %}
+                        <span class="address-tag">默认</span>
+                        {% endif %}
+                        <div class="address-header">
+                            <span class="address-name">{{ addr.name }}</span>
+                            <span class="address-phone">{{ addr.phone|slice:":3" }}****{{ addr.phone|slice:"-4:" }}</span>
+                        </div>
+                        <div class="address-detail">{{ addr.province }}{{ addr.city }}{{ addr.district }}{{ addr.detail }}</div>
+                        <div class="address-actions">
+                            <span class="address-action" onclick="editAddress({{ addr.id }})">编辑</span>
+                            <span class="address-action" onclick="setDefaultAddress({{ addr.id }})">{% if addr.is_default %}默认地址{% else %}设为默认{% endif %}</span>
+                            <span class="address-action" onclick="deleteAddress({{ addr.id }})">删除</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">📍</div>
+                    <div class="empty-text">暂无收货地址，点击下方按钮添加</div>
+                </div>
+                {% endif %}
+                <button class="order-btn order-btn-primary" style="width:100%;margin-top:15px" onclick="showAddressForm()">+ 添加新地址</button>
+            </div>
+        </div>
+
+        {% elif active_tab == 'collections' %}
+        <div id="collections">
+            <div class="section-title">我的收藏</div>
+            {% if collections %}
+            <div class="order-list">
+                {% for item in collections %}
+                <div class="order-item" style="display:flex;gap:20px">
+                    <img src="{{ item.img.url }}" alt="{{ item.name }}" class="order-item-img">
+                    <div class="order-item-info" style="flex:1">
+                        <div class="order-item-name">{{ item.name }}</div>
+                        <div style="color:#999;font-size:0.85rem;margin:5px 0">{{ item.types }}</div>
+                        <div class="order-item-price">¥{{ item.discount|default:item.price }}</div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;justify-content:center;gap:10px">
+                        <button class="order-btn order-btn-primary" onclick="addToCart({{ item.id }})">加入购物车</button>
+                        <button class="order-btn order-btn-secondary" onclick="removeCollection({{ item.id }})">取消收藏</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">❤️</div>
+                <div class="empty-text">暂无收藏商品</div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% elif active_tab == 'settings' %}
+        <div id="settings">
+            <div class="section-title">账户设置</div>
+            <div style="display:flex;flex-direction:column;gap:15px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:15px;border-bottom:1px solid #eee">
+                    <span>修改密码</span>
+                    <button class="order-btn order-btn-secondary">修改</button>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:15px;border-bottom:1px solid #eee">
+                    <span>绑定手机号</span>
+                    <span style="color:#999">138****8888</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:15px;border-bottom:1px solid #eee">
+                    <span>安全设置</span>
+                    <button class="order-btn order-btn-secondary">设置</button>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:15px">
+                    <span>关于我们</span>
+                    <button class="order-btn order-btn-secondary">查看</button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="address-form-overlay" id="addressFormOverlay" onclick="closeAddressForm()">
+    <div class="address-form" onclick="event.stopPropagation()">
+        <span class="form-close" onclick="closeAddressForm()">×</span>
+        <div class="form-title">添加收货地址</div>
+        
+        <div class="form-group-row">
+            <div class="form-group">
+                <label class="form-label">收货人姓名 *</label>
+                <input type="text" class="form-input" id="formName" placeholder="请输入姓名">
+            </div>
+            <div class="form-group">
+                <label class="form-label">联系电话 *</label>
+                <input type="tel" class="form-input" id="formPhone" placeholder="请输入手机号">
+            </div>
+        </div>
+        
+        <div class="form-group-row">
+            <div class="form-group">
+                <label class="form-label">省份 *</label>
+                <input type="text" class="form-input" id="formProvince" placeholder="如：浙江省">
+            </div>
+            <div class="form-group">
+                <label class="form-label">城市 *</label>
+                <input type="text" class="form-input" id="formCity" placeholder="如：杭州市">
+            </div>
+            <div class="form-group">
+                <label class="form-label">区县 *</label>
+                <input type="text" class="form-input" id="formDistrict" placeholder="如：西湖区">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">详细地址 *</label>
+            <input type="text" class="form-input" id="formDetail" placeholder="街道、门牌号等">
+        </div>
+        
+        <div class="form-group">
+            <div class="form-radio-group">
+                <input type="radio" class="form-radio" id="formDefault" name="isDefault" value="true">
+                <label class="form-radio-label" for="formDefault">设为默认地址</label>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button class="form-btn form-btn-cancel" onclick="closeAddressForm()">取消</button>
+            <button class="form-btn form-btn-submit" onclick="saveAddress()">保存</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+function showToast(message) {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function showAddressForm() {
+    document.getElementById('addressFormOverlay').classList.add('show');
+    document.getElementById('formName').value = '';
+    document.getElementById('formPhone').value = '';
+    document.getElementById('formProvince').value = '';
+    document.getElementById('formCity').value = '';
+    document.getElementById('formDistrict').value = '';
+    document.getElementById('formDetail').value = '';
+    document.getElementById('formDefault').checked = false;
+}
+
+function closeAddressForm() {
+    document.getElementById('addressFormOverlay').classList.remove('show');
+}
+
+function saveAddress() {
+    const name = document.getElementById('formName').value.trim();
+    const phone = document.getElementById('formPhone').value.trim();
+    const province = document.getElementById('formProvince').value.trim();
+    const city = document.getElementById('formCity').value.trim();
+    const district = document.getElementById('formDistrict').value.trim();
+    const detail = document.getElementById('formDetail').value.trim();
+    const isDefault = document.getElementById('formDefault').checked;
+
+    if (!name || !phone || !province || !city || !district || !detail) {
+        showToast('请填写完整地址信息');
+        return;
+    }
+
+    if (!/^1[3-9]\d{9}$/.test(phone)) {
+        showToast('请输入正确的手机号');
+        return;
+    }
+
+    fetch('/shopper/address/add/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            name: name,
+            phone: phone,
+            province: province,
+            city: city,
+            district: district,
+            detail: detail,
+            is_default: isDefault
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('地址添加成功');
+            closeAddressForm();
+            location.reload();
+        } else {
+            showToast('添加失败: ' + data.message);
+        }
+    });
+}
+
+function setDefaultAddress(addressId) {
+    fetch('/shopper/address/default/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ address_id: addressId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('已设为默认地址');
+            location.reload();
+        } else {
+            showToast('操作失败: ' + data.message);
+        }
+    });
+}
+
+function deleteAddress(addressId) {
+    if (!confirm('确定要删除这个地址吗？')) return;
+
+    fetch('/shopper/address/delete/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ address_id: addressId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('地址已删除');
+            location.reload();
+        } else {
+            showToast('删除失败: ' + data.message);
+        }
+    });
+}
+
+function addToCart(commodityId) {
+    fetch('/shopper/add/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ commodity_id: commodityId, quantity: 1 })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('已添加到购物车');
+        } else {
+            showToast('添加失败: ' + data.message);
+        }
+    });
+}
+
+function removeCollection(commodityId) {
+    if (!confirm('确定要取消收藏吗？')) return;
+    showToast('已取消收藏');
+}
+</script>
+{% endblock %}

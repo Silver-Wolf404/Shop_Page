@@ -1,0 +1,598 @@
+{% extends 'base.html' %}
+
+{% block title %}母婴商城{% endblock %}
+
+{% block extra_css %}
+        .banner {
+            background: #f8bbd0;
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .banner-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .banner-text {
+            flex: 1;
+            text-align: center;
+        }
+        .banner-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .banner-subtitle {
+            background: rgba(255,255,255,0.9);
+            color: #f8bbd0;
+            padding: 8px 25px;
+            border-radius: 25px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .banner-image {
+            flex: 1;
+            text-align: right;
+        }
+        .banner-image img {
+            max-width: 350px;
+            height: auto;
+        }
+        .banner-decor {
+            position: absolute;
+            right: 10%;
+            top: 10%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+        }
+        .banner-decor::after {
+            content: '';
+            position: absolute;
+            left: -30px;
+            bottom: 20px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+        }
+        .today-section {
+            margin: 2rem 0;
+            border: 1px solid #e0e0e0;
+            display: flex;
+        }
+        .today-sidebar {
+            width: 200px;
+            background: linear-gradient(135deg, #f8bbd0 0%, #f48fb1 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+        .today-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .today-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .today-desc {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .today-products-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        .today-products {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+        .today-products::-webkit-scrollbar {
+            display: none;
+        }
+        .product-link {
+            text-decoration: none;
+            color: inherit;
+        }
+        .hot-product-item {
+            min-width: 200px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .hot-product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        .carousel-arrow:hover {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .carousel-arrow.left {
+            left: 10px;
+        }
+        .carousel-arrow.right {
+            right: 10px;
+        }
+        .hot-product-image {
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .hot-product-image img {
+            max-width: 100%;
+            max-height: 80px;
+        }
+        .hot-product-name {
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+        .hot-product-price {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .hot-product-price .current {
+            color: #ff5722;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .hot-product-price .original {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 0.8rem;
+        }
+        .floor-section {
+            margin: 2rem 0;
+            display: flex;
+            border: 1px solid #e0e0e0;
+        }
+        .floor-sidebar {
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+        .floor-sidebar-1f {
+            background: #d1c4e9;
+        }
+        .floor-sidebar-2f {
+            background: #bbdefb;
+        }
+        .floor-sidebar-3f {
+            background: #ffe0b2;
+        }
+        .floor-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .floor-icon {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .floor-name {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        .floor-content {
+            flex: 1;
+            background: white;
+        }
+        .floor-header {
+            background-image: url('https://via.placeholder.com/800x200');
+            background-size: cover;
+            background-position: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+        .floor-header-text {
+            text-align: left;
+        }
+        .floor-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        .floor-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+            letter-spacing: 0.5rem;
+        }
+        .floor-products-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .floor-products {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+        .floor-products::-webkit-scrollbar {
+            display: none;
+        }
+        .floor-product-item {
+            min-width: 200px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .floor-product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .floor-carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        .floor-carousel-arrow:hover {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .floor-carousel-arrow.left {
+            left: 10px;
+        }
+        .floor-carousel-arrow.right {
+            right: 10px;
+        }
+        .floor-product-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        @media (max-width: 768px) {
+            .banner-content {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .today-section {
+                flex-direction: column;
+            }
+            .today-sidebar {
+                width: 100%;
+                padding: 1rem 0;
+            }
+            .today-products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .floor-section {
+                flex-direction: column;
+            }
+            .floor-sidebar {
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                gap: 2rem;
+                padding: 1rem 0;
+            }
+            .floor-products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+{% endblock %}
+
+{% block content %}
+    <section class="banner">
+        <div class="banner-decor"></div>
+        <div class="container">
+            <div class="banner-content">
+                <div class="banner-text">
+                    <h1 class="banner-title">今日促销</h1>
+                    <div class="banner-subtitle">全场奶粉5折起</div>
+                </div>
+                <div class="banner-image">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=two%20cans%20of%20a2%20platinum%20baby%20formula%20purple%20silver%20package%20baby%20milk%20powder%20product%20image&image_size=portrait_4_3" alt="奶粉促销">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <section class="today-section">
+            <div class="today-sidebar">
+                <div class="today-title">今日必抢</div>
+                <div class="today-icon">🛒</div>
+                <div class="today-desc">/ 每日10点开抢 /</div>
+            </div>
+            <div class="today-products-container">
+                <div class="carousel-arrow left">❮</div>
+                <div class="today-products">
+                    {% for product in today_hot %}
+                    <a href="/commodity/detail/{{ product.id }}/" class="product-link">
+                        <div class="hot-product-item">
+                            <div class="hot-product-image">
+                                {% if product.img %}
+                                <img src="{{ product.img.url }}" alt="{{ product.name }}">
+                                {% else %}
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=baby%20product%20placeholder&image_size=square" alt="{{ product.name }}">
+                                {% endif %}
+                            </div>
+                            <div class="hot-product-name">{{ product.name }}</div>
+                            <div class="hot-product-price">
+                                <span class="current">¥{{ product.discount|default:product.price|floatformat:2 }}</span>
+                                {% if product.discount > 0 and product.discount < product.price %}
+                                <span class="original">¥{{ product.price|floatformat:2 }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="carousel-arrow right">❯</div>
+            </div>
+        </section>
+
+        <section class="floor-section">
+            <div class="floor-sidebar floor-sidebar-1f">
+                <div class="floor-number">1F</div>
+                <div class="floor-icon">🛒</div>
+                <div class="floor-name">宝宝服饰</div>
+            </div>
+            <div class="floor-content">
+                <div class="floor-header">
+                    <div class="floor-header-text">
+                        <div class="floor-title">COLORFUL autumn</div>
+                        <div class="floor-subtitle">多彩秋季 / 童不同</div>
+                    </div>
+                </div>
+                <div class="floor-products-container">
+                    <div class="floor-carousel-arrow left">❮</div>
+                    <div class="floor-products" id="baby-clothing">
+                        {% for product in baby_clothing %}
+                        <a href="/commodity/detail/{{ product.id }}/" class="product-link">
+                            <div class="floor-product-item">
+                                <div class="floor-product-image">
+                                    {% if product.img %}
+                                    <img src="{{ product.img.url }}" alt="{{ product.name }}">
+                                    {% else %}
+                                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=baby%20clothing%20placeholder&image_size=square" alt="{{ product.name }}">
+                                    {% endif %}
+                                </div>
+                                <div class="hot-product-name">{{ product.name }}</div>
+                                <div class="hot-product-price">
+                                    <span class="current">¥{{ product.discount|default:product.price|floatformat:2 }}</span>
+                                    {% if product.discount > 0 and product.discount < product.price %}
+                                    <span class="original">¥{{ product.price|floatformat:2 }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    <div class="floor-carousel-arrow right">❯</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="floor-section">
+            <div class="floor-sidebar floor-sidebar-2f">
+                <div class="floor-number">2F</div>
+                <div class="floor-icon">🛒</div>
+                <div class="floor-name">奶粉辅食</div>
+            </div>
+            <div class="floor-content">
+                <div class="floor-header">
+                    <div class="floor-header-text">
+                        <div class="floor-title">COLORFUL autumn</div>
+                        <div class="floor-subtitle">多彩秋季 / 童不同</div>
+                    </div>
+                </div>
+                <div class="floor-products-container">
+                    <div class="floor-carousel-arrow left">❮</div>
+                    <div class="floor-products" id="baby-food">
+                        {% for product in baby_food %}
+                        <a href="/commodity/detail/{{ product.id }}/" class="product-link">
+                            <div class="floor-product-item">
+                                <div class="floor-product-image">
+                                    {% if product.img %}
+                                    <img src="{{ product.img.url }}" alt="{{ product.name }}">
+                                    {% else %}
+                                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=baby%20food%20placeholder&image_size=square" alt="{{ product.name }}">
+                                    {% endif %}
+                                </div>
+                                <div class="hot-product-name">{{ product.name }}</div>
+                                <div class="hot-product-price">
+                                    <span class="current">¥{{ product.discount|default:product.price|floatformat:2 }}</span>
+                                    {% if product.discount > 0 and product.discount < product.price %}
+                                    <span class="original">¥{{ product.price|floatformat:2 }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    <div class="floor-carousel-arrow right">❯</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="floor-section">
+            <div class="floor-sidebar floor-sidebar-3f">
+                <div class="floor-number">3F</div>
+                <div class="floor-icon">🛒</div>
+                <div class="floor-name">宝宝用品</div>
+            </div>
+            <div class="floor-content">
+                <div class="floor-header">
+                    <div class="floor-header-text">
+                        <div class="floor-title">COLORFUL autumn</div>
+                        <div class="floor-subtitle">多彩秋季 / 童不同</div>
+                    </div>
+                </div>
+                <div class="floor-products-container">
+                    <div class="floor-carousel-arrow left">❮</div>
+                    <div class="floor-products" id="baby-products">
+                        {% for product in baby_products %}
+                        <a href="/commodity/detail/{{ product.id }}/" class="product-link">
+                            <div class="floor-product-item">
+                                <div class="floor-product-image">
+                                    {% if product.img %}
+                                    <img src="{{ product.img.url }}" alt="{{ product.name }}">
+                                    {% else %}
+                                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=baby%20products%20placeholder&image_size=square" alt="{{ product.name }}">
+                                    {% endif %}
+                                </div>
+                                <div class="hot-product-name">{{ product.name }}</div>
+                                <div class="hot-product-price">
+                                    <span class="current">¥{{ product.discount|default:product.price|floatformat:2 }}</span>
+                                    {% if product.discount > 0 and product.discount < product.price %}
+                                    <span class="original">¥{{ product.price|floatformat:2 }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    <div class="floor-carousel-arrow right">❯</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 滑动功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 今日必抢滑动
+            const todayContainer = document.querySelector('.today-products');
+            const todayLeftArrow = document.querySelector('.today-products-container .carousel-arrow.left');
+            const todayRightArrow = document.querySelector('.today-products-container .carousel-arrow.right');
+            
+            if (todayLeftArrow && todayRightArrow && todayContainer) {
+                todayLeftArrow.addEventListener('click', function() {
+                    todayContainer.scrollBy({ left: -250, behavior: 'smooth' });
+                });
+                
+                todayRightArrow.addEventListener('click', function() {
+                    todayContainer.scrollBy({ left: 250, behavior: 'smooth' });
+                });
+            }
+            
+            // 宝宝服饰滑动
+            const clothingContainer = document.getElementById('baby-clothing');
+            const clothingContainerParent = clothingContainer ? clothingContainer.parentElement : null;
+            const clothingLeftArrow = clothingContainerParent ? clothingContainerParent.querySelector('.floor-carousel-arrow.left') : null;
+            const clothingRightArrow = clothingContainerParent ? clothingContainerParent.querySelector('.floor-carousel-arrow.right') : null;
+            
+            if (clothingLeftArrow && clothingRightArrow && clothingContainer) {
+                clothingLeftArrow.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    clothingContainer.scrollBy({ left: -250, behavior: 'smooth' });
+                });
+                
+                clothingRightArrow.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    clothingContainer.scrollBy({ left: 250, behavior: 'smooth' });
+                });
+            }
+            
+            // 奶粉辅食滑动
+            const foodContainer = document.getElementById('baby-food');
+            const foodContainerParent = foodContainer ? foodContainer.parentElement : null;
+            const foodLeftArrow = foodContainerParent ? foodContainerParent.querySelector('.floor-carousel-arrow.left') : null;
+            const foodRightArrow = foodContainerParent ? foodContainerParent.querySelector('.floor-carousel-arrow.right') : null;
+            
+            if (foodLeftArrow && foodRightArrow && foodContainer) {
+                foodLeftArrow.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    foodContainer.scrollBy({ left: -250, behavior: 'smooth' });
+                });
+                
+                foodRightArrow.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    foodContainer.scrollBy({ left: 250, behavior: 'smooth' });
+                });
+            }
+            
+            // 宝宝用品滑动
+            const productsContainer = document.getElementById('baby-products');
+            const productsContainerParent = productsContainer ? productsContainer.parentElement : null;
+            const productsLeftArrow = productsContainerParent ? productsContainerParent.querySelector('.floor-carousel-arrow.left') : null;
+            const productsRightArrow = productsContainerParent ? productsContainerParent.querySelector('.floor-carousel-arrow.right') : null;
+            
+            if (productsLeftArrow && productsRightArrow && productsContainer) {
+                productsLeftArrow.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    productsContainer.scrollBy({ left: -250, behavior: 'smooth' });
+                });
+                
+                productsRightArrow.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    productsContainer.scrollBy({ left: 250, behavior: 'smooth' });
+                });
+            }
+        });
+    </script>
+{% endblock %}

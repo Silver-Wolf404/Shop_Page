@@ -1,0 +1,319 @@
+{% extends 'base.html' %}
+
+{% block title %}登录 - 母婴商城{% endblock %}
+
+{% block extra_css %}
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.login-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+.login-subtitle {
+    color: #999;
+    font-size: 0.9rem;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.form-input:focus {
+    border-color: #d1c4e9;
+}
+.form-input.error {
+    border-color: #ff5722;
+}
+.error-message {
+    color: #ff5722;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #f8bbd0 0%, #d1c4e9 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+.login-btn:hover {
+    opacity: 0.9;
+}
+.login-footer {
+    text-align: center;
+    margin-top: 25px;
+}
+.login-footer a {
+    color: #9c27b0;
+    text-decoration: none;
+}
+.login-footer a:hover {
+    text-decoration: underline;
+}
+.switch-tab {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+.switch-tab button {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    padding-bottom: 10px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+.switch-tab button.active {
+    color: #9c27b0;
+    border-bottom-color: #9c27b0;
+}
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+}
+.toast {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+}
+.toast.show {
+    transform: translateX(0);
+}
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="switch-tab">
+        <button id="loginTab" class="active" onclick="switchTab('login')">登录</button>
+        <button id="registerTab" onclick="switchTab('register')">注册</button>
+    </div>
+
+    <div class="login-header">
+        <div class="login-title">👶 母婴商城</div>
+        <div class="login-subtitle">欢迎来到母婴商城</div>
+    </div>
+
+    <form id="loginForm" onsubmit="handleSubmit(event)">
+        <div class="form-group" id="usernameGroup">
+            <label class="form-label">用户名 *</label>
+            <input type="text" class="form-input" id="username" placeholder="请输入用户名">
+            <div class="error-message" id="usernameError"></div>
+        </div>
+
+        <div class="form-group" id="passwordGroup">
+            <label class="form-label">密码 *</label>
+            <input type="password" class="form-input" id="password" placeholder="请输入密码">
+            <div class="error-message" id="passwordError"></div>
+        </div>
+
+        <div class="form-group" id="confirmPasswordGroup" style="display:none">
+            <label class="form-label">确认密码 *</label>
+            <input type="password" class="form-input" id="confirmPassword" placeholder="请再次输入密码">
+            <div class="error-message" id="confirmPasswordError"></div>
+        </div>
+
+        <div class="form-group" id="phoneGroup" style="display:none">
+            <label class="form-label">手机号</label>
+            <input type="tel" class="form-input" id="phone" placeholder="请输入手机号">
+            <div class="error-message" id="phoneError"></div>
+        </div>
+
+        <button type="submit" class="login-btn" id="submitBtn">登 录</button>
+
+        <div class="login-footer">
+            {% if active_tab == 'login' %}
+            <span>还没有账号？<a href="#" onclick="switchTab('register')">立即注册</a></span>
+            {% else %}
+            <span>已有账号？<a href="#" onclick="switchTab('login')">立即登录</a></span>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+let currentTab = 'login';
+
+function switchTab(tab) {
+    currentTab = tab;
+    
+    document.getElementById('loginTab').classList.remove('active');
+    document.getElementById('registerTab').classList.remove('active');
+    document.getElementById(tab + 'Tab').classList.add('active');
+    
+    if (tab === 'login') {
+        document.getElementById('submitBtn').textContent = '登 录';
+        document.getElementById('confirmPasswordGroup').style.display = 'none';
+        document.getElementById('phoneGroup').style.display = 'none';
+    } else {
+        document.getElementById('submitBtn').textContent = '注 册';
+        document.getElementById('confirmPasswordGroup').style.display = 'block';
+        document.getElementById('phoneGroup').style.display = 'block';
+    }
+    
+    clearErrors();
+}
+
+function clearErrors() {
+    document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+    document.querySelectorAll('.form-input').forEach(el => el.classList.remove('error'));
+}
+
+function showToast(message) {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function handleSubmit(event) {
+    event.preventDefault();
+    clearErrors();
+    
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    
+    if (!username) {
+        showError('username', '请输入用户名');
+        return;
+    }
+    
+    if (!password) {
+        showError('password', '请输入密码');
+        return;
+    }
+    
+    if (currentTab === 'register') {
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const phone = document.getElementById('phone').value;
+        
+        if (password.length < 6) {
+            showError('password', '密码至少需要6位');
+            return;
+        }
+        
+        if (password !== confirmPassword) {
+            showError('confirmPassword', '两次输入的密码不一致');
+            return;
+        }
+        
+        if (phone && !/^1[3-9]\d{9}$/.test(phone)) {
+            showError('phone', '请输入正确的手机号');
+            return;
+        }
+        
+        fetch('/shopper/register/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                phone: phone
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast('注册成功，即将跳转到首页');
+                setTimeout(() => window.location.href = '/', 2000);
+            } else {
+                showToast(data.message);
+            }
+        });
+    } else {
+        fetch('/shopper/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast('登录成功，即将跳转到首页');
+                setTimeout(() => window.location.href = '/', 2000);
+            } else {
+                showToast(data.message);
+            }
+        });
+    }
+}
+
+function showError(field, message) {
+    document.getElementById(field + 'Error').textContent = message;
+    document.getElementById(field).classList.add('error');
+}
+</script>
+{% endblock %}
